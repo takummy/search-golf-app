@@ -1,9 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ja from 'date-fns/locale/ja';
+import format from 'date-fns/format';
 import addDays from 'date-fns/addDays';
 import './Common.css';
 import 'semantic-ui-css/semantic.min.css'
+import Result from './Result';
 
 const Today = new Date();
 registerLocale('ja', ja);
@@ -13,15 +16,21 @@ const Home = () => {
   const [budget, setbudget] = React.useState('12000');
   const [departure, setDeparture] = React.useState('1');
   const [duration, setDuration] = React.useState('90');
-  console.debug(date);
-  console.debug(budget);
-  console.debug(departure);
-  console.debug(duration);
+  const [plans, setPlans] = React.useState([]);
+
+  const onFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const response = await axios.get('https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses', {
+      params: { date: format(date, 'yyyyMMdd'), budget: budget, departure: departure, duration: duration }
+    });
+    setPlans(response.data.plans);
+  }
 
   return (
     <div className="ui container" id="container">
     <div className="Search__Form">
-      <form className="ui form segment">
+      <form className="ui form segment" onSubmit={onFormSubmit}>
         <div className="field">
           <label><i className="calendar alternate outline icon"></i>プレー日</label>
           <DatePicker
@@ -76,6 +85,7 @@ const Home = () => {
           </button>
         </div>
       </form>
+      <Result plans={plans} />
     </div>
   </div>
   );
