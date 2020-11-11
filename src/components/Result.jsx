@@ -63,7 +63,7 @@ const Result = ({plans, planCount}) => {
   if (planCount === 0) {
     return foundNoData
   }
-  return <>{results}</>
+  return <>{results}</>;
 };
 
 export default Result;
