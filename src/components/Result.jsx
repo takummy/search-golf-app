@@ -1,7 +1,16 @@
 import React from "react";
 import "./Common.css";
 
-const Result = ({plans}) => {
+const Result = ({plans, planCount}) => {
+  const foundNoData = (
+    <div className="wrapper">
+      <div className="ui orange message">
+        <div className="header">
+          ゴルフ場が見つかりませんでした。条件を変更して再度検索してください。
+        </div>
+      </div>
+    </div>
+  );
   const results = plans.map(plan => {
     return (
       <div className="item" key={plan.plan_id}>
@@ -51,7 +60,10 @@ const Result = ({plans}) => {
     );
   });
 
-  return <>{results}</>;
+  if (planCount === 0) {
+    return foundNoData
+  }
+  return <>{results}</>
 };
 
 export default Result;

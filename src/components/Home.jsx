@@ -17,6 +17,7 @@ const Home = () => {
   const [departure, setDeparture] = React.useState('1');
   const [duration, setDuration] = React.useState('90');
   const [plans, setPlans] = React.useState([]);
+  const [planCount, setPlanCount] = React.useState(0);
 
   const onFormSubmit = async (event) => {
     event.preventDefault();
@@ -25,6 +26,7 @@ const Home = () => {
       params: { date: format(date, 'yyyyMMdd'), budget: budget, departure: departure, duration: duration }
     });
     setPlans(response.data.plans);
+    setPlanCount(response.data.count);
   }
 
   return (
@@ -85,7 +87,7 @@ const Home = () => {
           </button>
         </div>
       </form>
-      <Result plans={plans} />
+      <Result plans={plans} planCount={planCount} />
     </div>
   </div>
   );
