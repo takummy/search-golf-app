@@ -7,6 +7,7 @@ import addDays from 'date-fns/addDays';
 import './Common.css';
 import 'semantic-ui-css/semantic.min.css'
 import Result from './Result';
+import Loading from './Loading';
 
 const Today = new Date();
 registerLocale('ja', ja);
@@ -19,15 +20,18 @@ const Home = () => {
   const [plans, setPlans] = React.useState([]);
   const [planCount, setPlanCount] = React.useState(0);
   const [error, setError] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const onFormSubmit = async (event) => {
+    event.preventDefault();
     try {
-      event.preventDefault();
+      setIsLoading(true);
       const response = await axios.get('https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses', {
         params: { date: format(date, 'yyyyMMdd'), budget: budget, departure: departure, duration: duration }
       });
       setPlans(response.data.plans);
       setPlanCount(response.data.count);
+      setIsLoading(false);
     } catch (e) {
       setError(e);
     }
@@ -91,6 +95,7 @@ const Home = () => {
           </button>
         </div>
       </form>
+      <Loading isLoading={isLoading} />
       <Result
         plans={plans}
         planCount={planCount}
