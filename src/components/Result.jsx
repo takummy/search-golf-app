@@ -11,7 +11,7 @@ const Result = ({plans, planCount, error}) => {
         </div>
         検索条件を見直すか、管理者にお問い合わせください。
       </div>
-    </div> 
+    </div>
   );
   const foundNoData = (
     <div className="wrapper">
