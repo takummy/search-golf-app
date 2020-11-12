@@ -1,7 +1,18 @@
 import React from "react";
 import "./Common.css";
 
-const Result = ({plans, planCount}) => {
+const Result = ({plans, planCount, error}) => {
+  const hasError = (
+    <div className="wrapper">
+      <div className="ui negative message">
+        <i className="close icon"></i>
+        <div className="header">
+          エラーが発生しました。
+        </div>
+        検索条件を見直すか、管理者にお問い合わせください。
+      </div>
+    </div>
+  );
   const foundNoData = (
     <div className="wrapper">
       <div className="ui orange message">
@@ -59,11 +70,9 @@ const Result = ({plans, planCount}) => {
       </div>
     );
   });
-
-  if (planCount === 0) {
-    return foundNoData
-  }
-  return <>{results}</>;
+  if (error) return hasError;
+  if (planCount === 0) return foundNoData
+  return <>{results}</>
 };
 
 export default Result;
