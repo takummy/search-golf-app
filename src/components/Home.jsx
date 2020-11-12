@@ -18,15 +18,19 @@ const Home = () => {
   const [duration, setDuration] = React.useState('90');
   const [plans, setPlans] = React.useState([]);
   const [planCount, setPlanCount] = React.useState(0);
+  const [error, setError] = React.useState(null);
 
   const onFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const response = await axios.get('https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses', {
-      params: { date: format(date, 'yyyyMMdd'), budget: budget, departure: departure, duration: duration }
-    });
-    setPlans(response.data.plans);
-    setPlanCount(response.data.count);
+    try {
+      event.preventDefault();
+      const response = await axios.get('https://l1kwik11ne.execute-api.ap-northeast-1.amazonaws.com/production/golf-courses', {
+        params: { date: format(date, 'yyyyMMdd'), budget: budget, departure: departure, duration: duration }
+      });
+      setPlans(response.data.plans);
+      setPlanCount(response.data.count);
+    } catch (e) {
+      setError(e);
+    }
   }
 
   return (
@@ -87,7 +91,11 @@ const Home = () => {
           </button>
         </div>
       </form>
-      <Result plans={plans} planCount={planCount} />
+      <Result
+        plans={plans}
+        planCount={planCount}
+        error={error}
+      />
     </div>
   </div>
   );
