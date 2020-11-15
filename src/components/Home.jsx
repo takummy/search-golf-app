@@ -35,6 +35,7 @@ const Home = () => {
     } catch (e) {
       setError(e);
     }
+  };
 
   return (
     <div className="ui container" id="container">
